@@ -1,84 +1,74 @@
-# Enhanced Segmented Neural Style Transfer for Video Stylization
-## Outputs
+# Neural Style Transfer for Images and Video
 
-![Alt text](results/background-gif.gif)
+**PyTorch · Residual image-transform network · VGG16 perceptual loss · Archived video results**
 
-![Alt text](results/foreground-gif.gif)
+A consolidated showcase of the recovered neural style-transfer coursework: a feed-forward image-stylization implementation, artistic image examples, and the original foreground/background/video result clips.
 
-![Alt text](results/styled-gif.gif)
+*Historical research prototype · Not actively maintained*
 
-## Description
-This project focuses on enhancing Neural Style Transfer (NST) for video stylization by incorporating segmentation-based techniques and a temporal loss function. The goal is to apply different artistic styles to distinct regions within video frames while maintaining frame-to-frame coherence. This project leverages the power of deep learning and convolutional neural networks (CNNs) to create visually appealing and artistically consistent videos.
+## Video showcase
 
-## Project Objectives
-1. **Develop a Robust NST Model:** Create a high-quality model capable of performing neural style transfer on both images and videos.
-2. **Implement Segmentation-Based Style Transfer:** Apply different styles to specific regions within video frames to enhance creativity and visual appeal.
-3. **Incorporate Temporal Loss Function:** Ensure smooth and consistent stylization across video frames to maintain temporal coherence.
-4. **Monitor and Evaluate Performance:** Use TensorBoard for tracking training progress and conduct both qualitative and quantitative evaluations to validate the model's performance.
+| Background stylization | Foreground stylization | Combined stylization |
+| --- | --- | --- |
+| ![Archived background stylization](results/background-gif.gif) | ![Archived foreground stylization](results/foreground-gif.gif) | ![Archived combined stylization](results/styled-gif.gif) |
 
-## Features
-- **Advanced NST Model:** Utilizes convolutional neural networks (CNNs) to perform high-quality style transfer.
-- **Segmentation-Based Style Transfer:** Allows for different artistic styles to be applied to distinct regions within video frames.
-- **Temporal Loss Function:** Ensures that the stylization is consistent across consecutive video frames, preventing flickering and other artifacts.
-- **Performance Monitoring:** TensorBoard is used to track the training process, visualize metrics, and evaluate the model's performance.
-- **Comprehensive Evaluations:** Both qualitative and quantitative methods are used to assess the effectiveness of the style transfer.
+Watch the preserved [original video](results/Original.mp4), [foreground-styled video](results/Foreground-styled.mp4), [background-styled video](results/background-style.mp4), and [styled video](results/Styled.mp4).
 
-## Installation
-To get started with the project, follow these steps:
+These are archived project artifacts. No new training or video rendering was performed for this showcase.
 
-1. **Clone the repository:**
+## Image showcase
+
+| Content | Mosaic | Candy | Starry Night |
+| --- | --- | --- | --- |
+| ![Content image](showcase/content.jpg) | ![Mosaic stylization](showcase/mosaic.jpg) | ![Candy stylization](showcase/candy.jpg) | ![Starry Night stylization](showcase/starry.jpg) |
+
+The [original example gallery](data/examples/) contains additional content/style combinations. Images are preserved from the recovered project collection.
+
+## Implementation preserved here
+
+- A residual convolutional image-transform network in `models/definitions/transformer_net.py`.
+- VGG16 feature extraction for perceptual content and Gram-matrix style losses.
+- Optional total-variation regularization and TensorBoard logging in `training_script.py`.
+- Single-image and directory-based inference in `stylization_script.py`.
+- Content images, style images, model definitions, utilities, and archived result media.
+
+```mermaid
+flowchart LR
+    A[Content image] --> B[Residual transform network] --> C[Stylized image]
+    C --> D[VGG16 perceptual features]
+    E[Style image] --> D
+    D --> F[Content, style and total variation losses]
+    F --> B
+```
+
+The earlier project description proposed segmentation-aware video stylization and temporal coherence. The preserved Python entry points implement static-image/batch stylization and perceptual image training. The repository includes video results, but a complete matching segmentation/video/temporal-loss pipeline was not recovered; those capabilities are not presented as a verified runnable release.
+
+## Explore and run
+
+The archived `environment.yml` records Python 3.8.3 and PyTorch 1.5.0. Review it before recreating the historical environment.
+
+1. Training expects MS COCO images under `data/mscoco/` and style images under `data/style-images/`.
+2. With the required data and compatible environment, the actual training entry point accepts:
+
    ```bash
-   git clone https://github.com/captof-omuamua/Enhanced-Segmented-Neural-Style-Transfer-for-Real-Time-Video-Stylization.git
-   cd Enhanced-Segmented-Neural-Style-Transfer-for-Real-Time-Video-Stylization
+   python training_script.py --style_img_name mosaic.jpg --num_of_epochs 2
    ```
 
-2. **Install the required packages:**
+3. Inference expects a compatible checkpoint under `models/binaries/`:
+
    ```bash
-   pip install -r requirements.txt
+   python stylization_script.py --content_input taj_mahal.jpg --model_name mosaic_4e5_e2.pth
    ```
 
-## Usage
-Here is a step-by-step guide to using the project:
+Training data and checkpoints are supplied separately. Downloader URLs are historical configuration and have not been tested. No fresh runtime, quality, speed, or benchmark claim is made.
 
-1. **Prepare your content and style images:**
-   - Collect the images and videos you want to use for content and style transfer.
-   
-2. **Run the training script:**
-   ```bash
-   python train.py --content-dir path/to/content --style-dir path/to/style
-   ```
-   - This script will train the NST model using the provided content and style images.
+## Consolidated source
 
-3. **Generate stylized videos:**
-   ```bash
-   python stylize_video.py --input-video path/to/video --output-video path/to/output
-   ```
-   - This script will apply the trained NST model to the input video and save the stylized output.
+This is the main repository for the project. The duplicate `neural-style-transfer-archive` has been consolidated here. Its nine source/configuration files match the existing implementation after whitespace normalization; the main repository also retains the richer video results and full example tree.
 
-## Results
-Example results showcasing the effectiveness of the enhanced NST model can be found in the `results` folder. These examples demonstrate various stylized videos where different artistic styles have been applied to specific regions within the frames.
+A [source-only download](source.zip), [source index](SOURCE_INDEX.md), and [source notes](SOURCE_NOTES.md) are included. Team identifiers and recognizable credentials are excluded from these prepared additions. Existing third-party notices and code references remain applicable.
 
-## Methodology
-### Data Preparation
-- **Content Images:** A diverse set of images and videos are used as content sources.
-- **Style Images:** Various artistic images representing different styles are used to train the model.
+## Acknowledgments
 
-### Model Architecture
-- **Base Network:** A pre-trained VGG-19 network is used for feature extraction.
-- **Transfer Network:** A feed-forward convolutional network is employed for style transfer.
-- **Segmentation Module:** DeepLabV3 or a similar model is used for semantic segmentation to identify different regions within the video frames.
-- **Temporal Loss Function:** A custom loss function ensures temporal coherence across frames.
-
-### Training Process
-- **Loss Functions:** The training process minimizes a combination of content loss, style loss, and temporal loss to achieve high-quality stylization.
-- **Optimization:** The Adam optimizer is used for efficient training.
-
-### Evaluation Metrics
-- **Qualitative Evaluation:** Visual inspection of the generated images and videos.
-- **Quantitative Evaluation:** Metrics such as Structural Similarity Index (SSIM) and Gram matrix loss are used to assess the model's performance.
-
-
-## Acknowledgements
-- Inspired by the foundational work of Gatys et al., "A Neural Algorithm of Artistic Style" (2015).
-- Special thanks to the contributors of TensorBoard for providing a robust tool for performance monitoring.
+The implementation follows the perceptual-loss/image-transform approach discussed in the code's Johnson reference and the foundational artistic style-transfer work of Gatys and collaborators. PyTorch, torchvision, VGG features, and TensorBoard retain their respective upstream terms.
 
